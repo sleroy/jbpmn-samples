@@ -1,0 +1,32 @@
+package com.byoskill.pretimmobilier;
+
+import com.byoskill.pretimmobilier.PretImmobilierDO;
+import com.byoskill.pretimmobilier.ConditionsFinancieres;
+import com.byoskill.pretimmobilier.ValidationStatus;
+
+rule "Mensualité excessive"
+    when
+        // Vérifie si la mensualité dépasse 30% du revenu
+        pret : PretImmobilierDO(conditionsFinancieres.isMensualiteExcessive())
+    then
+        pret.getValidationStatus().setReglesFinanciereValidation(false);
+        System.out.println("La mensualité dépasse 30% du revenu. Validation risque échouée.");
+end
+
+rule "Ratio d'endettement acceptable"
+    when
+        // Vérifie si le ratio d'endettement est inférieur ou égal à 33%
+        pret : PretImmobilierDO(conditionsFinancieres.getRatioEndettement() <= 0.33)
+    then
+        pret.getValidationStatus().setReglesFinanciereValidation(true);
+        System.out.println("Le ratio d'endettement est acceptable. Validation risque réussie.");
+end
+
+rule "Validation du taux d'intérêt"
+    when
+        // Vérifie si le taux d'intérêt est raisonnable (par exemple <= 5%)
+        pret : PretImmobilierDO(conditionsFinancieres.getInterest() > 5.0f)
+    then
+        pret.getValidationStatus().setReglesFinanciereValidation(false);
+        System.out.println("Le taux d'intérêt est trop élevé. Validation financière échouée.");
+end
