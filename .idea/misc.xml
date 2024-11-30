@@ -12,6 +12,7 @@
         <option value="$PROJECT_DIR$/business-application-model/pom.xml" />
         <option value="$PROJECT_DIR$/business-application-kjar/pom.xml" />
         <option value="$PROJECT_DIR$/modelisation-samples/pom.xml" />
+        <option value="$PROJECT_DIR$/demo-maven/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
