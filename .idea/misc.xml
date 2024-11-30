@@ -11,7 +11,15 @@
         <option value="$PROJECT_DIR$/business-application-service/pom.xml" />
         <option value="$PROJECT_DIR$/business-application-model/pom.xml" />
         <option value="$PROJECT_DIR$/business-application-kjar/pom.xml" />
+        <option value="$PROJECT_DIR$/modelisation-samples/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/business-application-kjar/pom.xml" />
+        <option value="$PROJECT_DIR$/business-application-model/pom.xml" />
+        <option value="$PROJECT_DIR$/business-application-service/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="1.8" project-jdk-type="JavaSDK">
