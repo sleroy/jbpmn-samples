@@ -103,6 +103,11 @@ public class PretRestController {
     private DemandePretDTO mapToDTO(DemandePret demandePret) {
         DemandePretDTO dto = new DemandePretDTO();
         dto.setPretId(demandePret.getId());
+
+        // Update the status by querying JBPM
+        String status = jbpmService.getProcessInstanceStatus(containerId, demandePret.getProcessId());
+        demandePret.setStatus(status);
+
         dto.setStatus(demandePret.getStatus());
 
         // Map ConditionsFinancieres (assuming you have a ConditionsFinancieresDTO)

@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.kie.server.api.marshalling.MarshallingFormat;
 import org.kie.server.api.model.KieContainerResource;
 import org.kie.server.api.model.KieContainerResourceList;
+import org.kie.server.api.model.instance.ProcessInstance;
 import org.kie.server.client.KieServicesClient;
 import org.kie.server.client.KieServicesConfiguration;
 import org.kie.server.client.KieServicesFactory;
@@ -27,11 +28,17 @@ import java.util.Set;
 public class JBPMService {
 
 
+    public static final int STATE_ABORTED = 3;
+    public static final int STATE_ACTIVE = 1;
+    public static final int STATE_COMPLETED = 2;
+    public static final int STATE_PENDING = 0;
+    public static final int STATE_SUSPENDED = 4;
+    //
     private static final MarshallingFormat FORMAT = MarshallingFormat.JSON;
+    private static final Logger LOGGER = LoggerFactory.getLogger(JBPMService.class);
     private final JBPMConfiguration configuration;
     private KieServicesConfiguration conf;
     private KieServicesClient kieServicesClient;
-    private static final Logger LOGGER = LoggerFactory.getLogger(JBPMService.class);
 
     @Autowired
     public JBPMService(JBPMConfiguration configuration) {
@@ -69,15 +76,37 @@ public class JBPMService {
 
     public ProcessServicesClient getProcessServiceClient() {
 
-        return  kieServicesClient.getServicesClient(ProcessServicesClient.class);
+        return kieServicesClient.getServicesClient(ProcessServicesClient.class);
     }
 
-    public Long launchProcessus(String containerId,String processId,  Map<String, Object> parameters) {
+    public Long launchProcessus(String containerId, String processId, Map<String, Object> parameters) {
 
         ProcessServicesClient processServiceClient = getProcessServiceClient();
         Long processInstanceId = processServiceClient.startProcess(containerId, processId, parameters);
 
+
         LOGGER.info("Process instance started with ID: {}", processInstanceId);
         return processInstanceId;
+    }
+
+    public String getProcessInstanceStatus(String containerId, Long processId) {
+        if (processId == null) return "Inconnu";
+        ProcessInstance processInstance = getProcessServiceClient().getProcessInstance(containerId, processId);
+        if (processInstance == null) return "Completed";
+        Integer processInstanceState = processInstance.getState();
+        switch (processInstanceState) {
+            case STATE_COMPLETED:
+                return "Completed";
+            case STATE_ABORTED:
+                return "Aborted";
+            case STATE_SUSPENDED:
+                return "Suspended";
+            case STATE_PENDING:
+                return "Pending";
+            case STATE_ACTIVE:
+                return "Active";
+            default:
+                return "Unknown state " + processInstanceState;
+        }
     }
 }
