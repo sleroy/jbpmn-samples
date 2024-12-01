@@ -1,0 +1,106 @@
+package com.byoskill.pretimmobilier;
+
+import com.byoskill.pretimmobilier.PretImmobilier;
+import com.byoskill.pretimmobilier.ConditionsFinancieres;
+import com.byoskill.pretimmobilier.ValidationStatus;
+
+rule "Mensualité excessive"
+    when
+        // Vérifie si la mensualité dépasse 30% du revenu
+        pret : PretImmobilier(conditionsFinancieres.isMensualiteExcessive())
+    then
+        pret.getValidationStatus().setRiskAssessmentValidation(false);
+        System.out.println("La mensualité dépasse 30% du revenu. Validation risque échouée.");
+end
+
+rule "Ratio d'endettement acceptable"
+    when
+        // Vérifie si le ratio d'endettement est inférieur ou égal à 33%
+        pret : PretImmobilier(conditionsFinancieres.getRatioEndettement() <= 0.33)
+    then
+        pret.getValidationStatus().setRiskAssessmentValidation(true);
+        System.out.println("Le ratio d'endettement est acceptable. Validation risque réussie.");
+end
+
+rule "Validation du taux d'intérêt"
+    when
+        // Vérifie si le taux d'intérêt est raisonnable (par exemple <= 5%)
+        pret : PretImmobilier(conditionsFinancieres.getInterest() > 5.0f)
+    then
+        pret.getValidationStatus().setServiceFinancierValidation(false);
+        System.out.println("Le taux d'intérêt est trop élevé. Validation financière échouée.");
+end
+
+rule "Validation du directeur"
+    when
+        // Validation uniquement si toutes les conditions financières sont correctes
+        pret : PretImmobilier(
+            conditionsFinancieres.isMensualiteExcessive() == false,
+            conditionsFinancieres.getRatioEndettement() <= 0.33,
+            conditionsFinancieres.getInterest() <= 5.0f
+        )
+    then
+        pret.getValidationStatus().setDirecteurValidation(true);
+        System.out.println("Toutes les conditions financières sont respectées. Validation du directeur réussie.");
+end
+
+rule "Validation complète du prêt"
+    when
+        // Vérifie si toutes les validations sont complètes
+        pret : PretImmobilier(validationStatus.isValidationComplete() == true)
+    then
+        System.out.println("Toutes les validations ont été complétées avec succès.");
+end
+package com.byoskill.pretimmobilier;
+
+import com.byoskill.pretimmobilier.PretImmobilier;
+import com.byoskill.pretimmobilier.ConditionsFinancieres;
+import com.byoskill.pretimmobilier.ValidationStatus;
+
+rule "Mensualité excessive"
+    when
+        // Vérifie si la mensualité dépasse 30% du revenu
+        pret : PretImmobilier(conditionsFinancieres.isMensualiteExcessive())
+    then
+        pret.getValidationStatus().setRiskAssessmentValidation(false);
+        System.out.println("La mensualité dépasse 30% du revenu. Validation risque échouée.");
+end
+
+rule "Ratio d'endettement acceptable"
+    when
+        // Vérifie si le ratio d'endettement est inférieur ou égal à 33%
+        pret : PretImmobilier(conditionsFinancieres.getRatioEndettement() <= 0.33)
+    then
+        pret.getValidationStatus().setRiskAssessmentValidation(true);
+        System.out.println("Le ratio d'endettement est acceptable. Validation risque réussie.");
+end
+
+rule "Validation du taux d'intérêt"
+    when
+        // Vérifie si le taux d'intérêt est raisonnable (par exemple <= 5%)
+        pret : PretImmobilier(conditionsFinancieres.getInterest() > 5.0f)
+    then
+        pret.getValidationStatus().setServiceFinancierValidation(false);
+        System.out.println("Le taux d'intérêt est trop élevé. Validation financière échouée.");
+end
+
+rule "Validation du directeur"
+    when
+        // Validation uniquement si toutes les conditions financières sont correctes
+        pret : PretImmobilier(
+            conditionsFinancieres.isMensualiteExcessive() == false,
+            conditionsFinancieres.getRatioEndettement() <= 0.33,
+            conditionsFinancieres.getInterest() <= 5.0f
+        )
+    then
+        pret.getValidationStatus().setDirecteurValidation(true);
+        System.out.println("Toutes les conditions financières sont respectées. Validation du directeur réussie.");
+end
+
+rule "Validation complète du prêt"
+    when
+        // Vérifie si toutes les validations sont complètes
+        pret : PretImmobilier(validationStatus.isValidationComplete() == true)
+    then
+        System.out.println("Toutes les validations ont été complétées avec succès.");
+end

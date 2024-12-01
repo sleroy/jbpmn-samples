@@ -2,8 +2,8 @@ package com.byoskill.pretimmo.backend_demo.controllers;
 
 import com.byoskill.pretimmo.backend_demo.dto.ConditionsFinancieresDTO;
 import com.byoskill.pretimmo.backend_demo.dto.DemandePretDTO;
-import com.byoskill.pretimmo.backend_demo.pret.entities.ConditionsFinancieres;
-import com.byoskill.pretimmo.backend_demo.pret.entities.DemandePret;
+import com.byoskill.pretimmo.pret.entities.ConditionsFinancieres;
+import com.byoskill.pretimmo.pret.entities.DemandePret;
 import com.byoskill.pretimmo.backend_demo.repositories.DemandePretRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

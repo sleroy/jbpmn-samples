@@ -1,6 +1,6 @@
-package com.byoskill.pretimmo.backend_demo.pret.repositories;
+package com.byoskill.pretimmo.pret.repositories;
 
-import com.byoskill.pretimmo.backend_demo.pret.entities.DemandePret;
+import com.byoskill.pretimmo.pret.entities.DemandePret;
 
 import java.util.List;
 import java.util.Optional;
