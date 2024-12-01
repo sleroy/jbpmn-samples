@@ -1,5 +1,7 @@
 package com.byoskill.pretimmo.frontend_demo.model;
 
+import java.util.StringJoiner;
+
 public class DemandePret {
 
     private Long pretId;
@@ -29,5 +31,14 @@ public class DemandePret {
 
     public void setPretId(Long pretId) {
         this.pretId = pretId;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", DemandePret.class.getSimpleName() + "[", "]")
+                .add("pretId=" + pretId)
+                .add("conditionsFinancieres=" + conditionsFinancieres)
+                .add("status='" + status + "'")
+                .toString();
     }
 }

@@ -1,6 +1,7 @@
 package com.byoskill.pretimmo.backend_demo.dto;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public class ConditionsFinancieresDTO implements Serializable {
 
@@ -74,5 +75,16 @@ public class ConditionsFinancieresDTO implements Serializable {
         return (mensualite != null && revenuDemandeur != null)
                 ? (double) (mensualite * 12) / revenuDemandeur
                 : 0;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ConditionsFinancieresDTO.class.getSimpleName() + "[", "]")
+                .add("montantDemande=" + montantDemande)
+                .add("nombreAnnees=" + nombreAnnees)
+                .add("revenuDemandeur=" + revenuDemandeur)
+                .add("mensualite=" + mensualite)
+                .add("interest=" + interest)
+                .toString();
     }
 }

@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Controller("offline")
 public class OfflinePretController {
 
+    public static final String TEMPLATE = "offline";
     private List<DemandePret> prets = new ArrayList<>(); // Store submitted requests
     private AtomicLong nextPretId = new AtomicLong(1); // Generate unique IDs
 
@@ -19,7 +20,7 @@ public class OfflinePretController {
     public String index(Model model) {
         model.addAttribute("demandePret", new DemandePret()); // Empty object for the form
         model.addAttribute("prets", prets); // Existing requests for the table
-        return "connected";
+        return TEMPLATE;
     }
 
     @PostMapping("/offline/submitPret")
@@ -37,6 +38,6 @@ public class OfflinePretController {
         model.addAttribute("demandePret", new DemandePret()); // Clear the form
         model.addAttribute("prets", prets);
 
-        return "connected"; // Redirect back to the same page
+        return TEMPLATE;
     }
 }

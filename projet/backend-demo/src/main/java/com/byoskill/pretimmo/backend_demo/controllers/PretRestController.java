@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/pret")
 public class PretRestController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PretRestController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PretRestController.class); // Define the logger
     private DemandePretRepository demandePretRepository;
 
     public PretRestController(DemandePretRepository demandePretRepository) {
@@ -28,44 +28,36 @@ public class PretRestController {
     @PostMapping("/submit")
     public ResponseEntity<DemandePretDTO> submitPret(@RequestBody DemandePretDTO demandePretDTO) {
         try {
-            // 1. Log the received request for debugging and auditing.
-            LOGGER.info("Received loan request: {}", demandePretDTO);
+            LOGGER.info("Received loan request: {}", demandePretDTO); // Log the incoming request
 
-            // 2. Map the DTO to the Entity
             DemandePret demandePret = mapToEntity(demandePretDTO);
-
-
-
-            // 3. Perform business logic (persist to database)
-            demandePretRepository.save(demandePret);
+            demandePret = demandePretRepository.save(demandePret); // Save to database
+            LOGGER.info("Saved loan request with ID: {}", demandePret.getId()); // Log the saved entity
 
             demandePretDTO.setPretId(demandePret.getId());
-
-            // 4. Return a success response (201 Created with the saved object, or 202 Accepted if asynchronous).
             return new ResponseEntity<>(demandePretDTO, HttpStatus.CREATED);
 
-        } catch (Exception e) { // Handle exceptions gracefully
-            LOGGER.error("Error processing loan request", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Or a more specific error response
-        }
-    }
-
-
-
-    @GetMapping("/all") // New endpoint to get all loan requests
-    public ResponseEntity<List<DemandePretDTO>> getAllPrets() {
-        try {
-            List<DemandePret> prets = demandePretRepository.findAll();
-            // Convert to DTOs (good practice for API responses)
-            final List<DemandePretDTO> demandePretDTOS = prets.stream().map(this::mapToDTO).collect(Collectors.toList());
-            return new ResponseEntity<>(demandePretDTOS, HttpStatus.OK);
         } catch (Exception e) {
-            LOGGER.error("Error retrieving loan requests", e);
+            LOGGER.error("Error processing loan request: {}", e.getMessage(), e); // Log the error with stack trace
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<DemandePretDTO>> getAllPrets() {
+        try {
+            LOGGER.info("Retrieving all loan requests"); // Log the start of retrieval
 
+            List<DemandePret> prets = demandePretRepository.findAll();
+            List<DemandePretDTO> demandePretDTOS = prets.stream().map(this::mapToDTO).collect(Collectors.toList());
+
+            LOGGER.info("Retrieved {} loan requests", demandePretDTOS.size());  // Log the number of retrieved requests
+            return new ResponseEntity<>(demandePretDTOS, HttpStatus.OK);
+        } catch (Exception e) {
+            LOGGER.error("Error retrieving loan requests: {}", e.getMessage(), e); // Log the error with stack trace
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     private DemandePretDTO mapToDTO(DemandePret demandePret) {
         DemandePretDTO dto = new DemandePretDTO();
         dto.setPretId(demandePret.getId());
