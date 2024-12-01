@@ -1,4 +1,4 @@
-package com.byoskill.pretimmo.pret.entities;
+package com.byoskill.pretimmo.backend_demo.domain.entities;
 
 import jakarta.persistence.*;
 

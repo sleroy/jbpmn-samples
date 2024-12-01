@@ -7,7 +7,7 @@ import com.byoskill.pretimmobilier.ValidationStatus;
 rule "Mensualité excessive"
     when
         // Vérifie si la mensualité dépasse 30% du revenu
-        pret : PretImmobilier(conditionsFinancieres.isMensualiteExcessive())
+        pret : PretImmobilier(conditionsFinancieresDO.isMensualiteExcessive())
     then
         pret.getValidationStatus().setRiskAssessmentValidation(false);
         System.out.println("La mensualité dépasse 30% du revenu. Validation risque échouée.");
@@ -16,7 +16,7 @@ end
 rule "Ratio d'endettement acceptable"
     when
         // Vérifie si le ratio d'endettement est inférieur ou égal à 33%
-        pret : PretImmobilier(conditionsFinancieres.getRatioEndettement() <= 0.33)
+        pret : PretImmobilier(conditionsFinancieresDO.getRatioEndettement() <= 0.33)
     then
         pret.getValidationStatus().setRiskAssessmentValidation(true);
         System.out.println("Le ratio d'endettement est acceptable. Validation risque réussie.");
@@ -25,7 +25,7 @@ end
 rule "Validation du taux d'intérêt"
     when
         // Vérifie si le taux d'intérêt est raisonnable (par exemple <= 5%)
-        pret : PretImmobilier(conditionsFinancieres.getInterest() > 5.0f)
+        pret : PretImmobilier(conditionsFinancieresDO.getInterest() > 5.0f)
     then
         pret.getValidationStatus().setServiceFinancierValidation(false);
         System.out.println("Le taux d'intérêt est trop élevé. Validation financière échouée.");
@@ -35,9 +35,9 @@ rule "Validation du directeur"
     when
         // Validation uniquement si toutes les conditions financières sont correctes
         pret : PretImmobilier(
-            conditionsFinancieres.isMensualiteExcessive() == false,
-            conditionsFinancieres.getRatioEndettement() <= 0.33,
-            conditionsFinancieres.getInterest() <= 5.0f
+            conditionsFinancieresDO.isMensualiteExcessive() == false,
+            conditionsFinancieresDO.getRatioEndettement() <= 0.33,
+            conditionsFinancieresDO.getInterest() <= 5.0f
         )
     then
         pret.getValidationStatus().setDirecteurValidation(true);
@@ -60,7 +60,7 @@ import com.byoskill.pretimmobilier.ValidationStatus;
 rule "Mensualité excessive"
     when
         // Vérifie si la mensualité dépasse 30% du revenu
-        pret : PretImmobilier(conditionsFinancieres.isMensualiteExcessive())
+        pret : PretImmobilier(conditionsFinancieresDO.isMensualiteExcessive())
     then
         pret.getValidationStatus().setRiskAssessmentValidation(false);
         System.out.println("La mensualité dépasse 30% du revenu. Validation risque échouée.");
@@ -69,7 +69,7 @@ end
 rule "Ratio d'endettement acceptable"
     when
         // Vérifie si le ratio d'endettement est inférieur ou égal à 33%
-        pret : PretImmobilier(conditionsFinancieres.getRatioEndettement() <= 0.33)
+        pret : PretImmobilier(conditionsFinancieresDO.getRatioEndettement() <= 0.33)
     then
         pret.getValidationStatus().setRiskAssessmentValidation(true);
         System.out.println("Le ratio d'endettement est acceptable. Validation risque réussie.");
@@ -78,7 +78,7 @@ end
 rule "Validation du taux d'intérêt"
     when
         // Vérifie si le taux d'intérêt est raisonnable (par exemple <= 5%)
-        pret : PretImmobilier(conditionsFinancieres.getInterest() > 5.0f)
+        pret : PretImmobilier(conditionsFinancieresDO.getInterest() > 5.0f)
     then
         pret.getValidationStatus().setServiceFinancierValidation(false);
         System.out.println("Le taux d'intérêt est trop élevé. Validation financière échouée.");
@@ -88,9 +88,9 @@ rule "Validation du directeur"
     when
         // Validation uniquement si toutes les conditions financières sont correctes
         pret : PretImmobilier(
-            conditionsFinancieres.isMensualiteExcessive() == false,
-            conditionsFinancieres.getRatioEndettement() <= 0.33,
-            conditionsFinancieres.getInterest() <= 5.0f
+            conditionsFinancieresDO.isMensualiteExcessive() == false,
+            conditionsFinancieresDO.getRatioEndettement() <= 0.33,
+            conditionsFinancieresDO.getInterest() <= 5.0f
         )
     then
         pret.getValidationStatus().setDirecteurValidation(true);

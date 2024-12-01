@@ -1,0 +1,193 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.byoskill.pretimmo</groupId>
+    <artifactId>pretimmo-domain</artifactId>
+    <packaging>jar</packaging>
+    <properties>
+        <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
+        <jakarta.transaction-api.version>2.0.1</jakarta.transaction-api.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <version.org.drools>7.74.1.Final</version.org.drools>
+        <version.org.jbpm>7.74.1.Final</version.org.jbpm>
+        <hibernate.version>4.2.0.Final</hibernate.version>
+        <hibernate.core.version>4.2.0.Final</hibernate.core.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <jboss.javaee.version>1.0.0.Final</jboss.javaee.version>
+        <logback.version>1.0.9</logback.version>
+        <h2.version>1.3.161</h2.version>
+        <narayana.version>5.9.0.Final</narayana.version>
+        <jta.version>1.0.1.Final</jta.version>
+        <junit.version>5.11.3</junit.version>
+        <xstream.version>1.4.21</xstream.version>
+
+        <kieserver.username>wbadmin</kieserver.username>
+        <kieserver.password>wbadmin</kieserver.password>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    <version>1.0-SNAPSHOT</version>
+    <name>pretimmo-domain</name>
+    <url>http://maven.apache.org</url>
+<!-- kieserver : https://github.com/kiegroup/droolsjbpm-integration/blob/main/kie-server-parent/kie-server-maven-plugin/README.md -->
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- define drools BOM -->
+            <dependency>
+                <groupId>org.drools</groupId>
+                <artifactId>drools-bom</artifactId>
+                <type>pom</type>
+                <version>${version.org.drools}</version>
+                <scope>import</scope>
+            </dependency>
+            <!-- define drools BOM -->
+            <dependency>
+                <groupId>org.jbpm</groupId>
+                <artifactId>jbpm-bom</artifactId>
+                <type>pom</type>
+                <version>${version.org.jbpm}</version>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-core</artifactId>
+            <version>${version.org.drools}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-compiler</artifactId>
+            <version>${version.org.drools}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-decisiontables</artifactId>
+            <version>${version.org.drools}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.30</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-api</artifactId>
+            <version>${version.org.jbpm}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-internal</artifactId>
+            <version>${version.org.jbpm}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-bpmn2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-flow</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jbpm</groupId>
+            <artifactId>jbpm-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Optionally: parameterized tests support -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>${xstream.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mvel</groupId>
+            <artifactId>mvel2</artifactId>
+            <version>2.5.2.Final</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+                <version>3.7.0</version>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <configuration>
+                    <mainClass>com.example.jbpm.App</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.kie</groupId>
+                <artifactId>kie-maven-plugin</artifactId>
+                <extensions>true</extensions>
+
+            </plugin>
+
+            <plugin>
+                <groupId>org.kie.server</groupId>
+                <artifactId>kie-server-maven-plugin</artifactId>
+                <version>7.74.1.Final</version>
+                <configuration>
+                    <username>${kieserver.username}</username>
+                    <password>${kieserver.password}</password>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

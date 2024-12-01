@@ -1,4 +1,4 @@
-package com.byoskill.pretimmo.backend_demo.dto;
+package com.byoskill.pretimmo.backend_demo.controllers.dto.dto;
 
 import java.io.Serializable;
 import java.util.StringJoiner;

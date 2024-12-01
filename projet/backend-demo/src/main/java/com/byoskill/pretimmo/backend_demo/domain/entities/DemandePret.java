@@ -1,4 +1,4 @@
-package com.byoskill.pretimmo.pret.entities;
+package com.byoskill.pretimmo.backend_demo.domain.entities;
 
 import jakarta.persistence.*;
 
@@ -11,22 +11,19 @@ public class DemandePret implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate ID
     private Long id; // Use Long for database IDs
-
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", DemandePret.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
-                .add("conditionsFinancieres=" + conditionsFinancieres)
-                .add("status='" + status + "'")
-                .toString();
-    }
-
     @OneToOne(cascade = CascadeType.ALL) // Embed conditions, cascade operations
     @JoinColumn(name = "conditions_financieres_id") // Join column name
     private ConditionsFinancieres conditionsFinancieres;
     private String status;
+    private Long processId;
 
+    public Long getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(Long processId) {
+        this.processId = processId;
+    }
 
     public Long getId() {
         return id;
@@ -50,5 +47,15 @@ public class DemandePret implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", DemandePret.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("conditionsFinancieres=" + conditionsFinancieres)
+                .add("status='" + status + "'")
+                .add("processId=" + processId)
+                .toString();
     }
 }

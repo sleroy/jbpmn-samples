@@ -1,4 +1,4 @@
-package com.byoskill.pretimmo.pret.dataobj;
+package com.byoskill.pretimmo.backend_demo.domain.dataobj;
 
 public class ValidationStatusDO implements java.io.Serializable {
 

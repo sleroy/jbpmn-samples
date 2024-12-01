@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ValidationTest extends JbpmJUnitBaseTestCase {
 
     @Test
-    public void testPackaging() {
+    public void testProcessusComplexe() {
         RuntimeManager runtimeManager = createRuntimeManager("PretImmobilierProcessus.bpmn");
 
         RuntimeEngine runtimeEngine = runtimeManager.getRuntimeEngine(null);
@@ -22,5 +22,23 @@ public class ValidationTest extends JbpmJUnitBaseTestCase {
         ProcessInstance processInstance = ksession.startProcess("demande_pret_immobilier");
 
         assertTrue(processInstance != null);
+
+        ksession.dispose();
     }
+
+    @Test
+    public void testProcessusSimple() {
+        RuntimeManager runtimeManager = createRuntimeManager("PretImmobilierProcessusSimple.bpmn");
+
+        RuntimeEngine runtimeEngine = runtimeManager.getRuntimeEngine(null);
+        KieSession ksession = runtimeEngine.getKieSession();
+        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", new HumanTaskHandler());
+        ProcessInstance processInstance = ksession.startProcess("PretImmobilierProcessusSimple");
+
+        assertTrue(processInstance != null);
+
+        ksession.dispose();
+    }
+
+
 }

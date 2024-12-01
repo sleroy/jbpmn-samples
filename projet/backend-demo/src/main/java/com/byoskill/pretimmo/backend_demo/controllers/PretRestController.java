@@ -1,16 +1,19 @@
 package com.byoskill.pretimmo.backend_demo.controllers;
 
-import com.byoskill.pretimmo.backend_demo.dto.ConditionsFinancieresDTO;
-import com.byoskill.pretimmo.backend_demo.dto.DemandePretDTO;
-import com.byoskill.pretimmo.pret.entities.ConditionsFinancieres;
-import com.byoskill.pretimmo.pret.entities.DemandePret;
-import com.byoskill.pretimmo.backend_demo.repositories.DemandePretRepository;
+import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.ConditionsFinancieresDTO;
+import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.DemandePretDTO;
+import com.byoskill.pretimmo.backend_demo.service.JBPMService;
+import com.byoskill.pretimmo.backend_demo.domain.entities.ConditionsFinancieres;
+import com.byoskill.pretimmo.backend_demo.domain.entities.DemandePret;
+import com.byoskill.pretimmo.backend_demo.domain.repositories.DemandePretRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,10 +22,42 @@ import java.util.stream.Collectors;
 public class PretRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PretRestController.class); // Define the logger
-    private DemandePretRepository demandePretRepository;
+    private final JBPMService jbpmService;
+    private final DemandePretRepository demandePretRepository;
 
-    public PretRestController(DemandePretRepository demandePretRepository) {
+    @Value("${jbpm.pret.containerId}")
+    private String containerId;
+    @Value("${jbpm.pret.processId}")
+    private String processId;
+
+    public PretRestController(DemandePretRepository demandePretRepository,
+                              JBPMService jbpmService) {
         this.demandePretRepository = demandePretRepository;
+        this.jbpmService = jbpmService;
+    }
+
+    public JBPMService getJbpmService() {
+        return jbpmService;
+    }
+
+    public DemandePretRepository getDemandePretRepository() {
+        return demandePretRepository;
+    }
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
+    }
+
+    public String getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(String processId) {
+        this.processId = processId;
     }
 
     @PostMapping("/submit")
@@ -31,6 +66,12 @@ public class PretRestController {
             LOGGER.info("Received loan request: {}", demandePretDTO); // Log the incoming request
 
             DemandePret demandePret = mapToEntity(demandePretDTO);
+
+            LOGGER.info("Invoking JBPM to launch a new process instance");
+            HashMap<String, Object> parameters = new HashMap<>();
+            Long processInstanceId = jbpmService.launchProcessus(containerId, processId, parameters);
+            demandePret.setProcessId(processInstanceId);
+
             demandePret = demandePretRepository.save(demandePret); // Save to database
             LOGGER.info("Saved loan request with ID: {}", demandePret.getId()); // Log the saved entity
 
@@ -58,6 +99,7 @@ public class PretRestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     private DemandePretDTO mapToDTO(DemandePret demandePret) {
         DemandePretDTO dto = new DemandePretDTO();
         dto.setPretId(demandePret.getId());

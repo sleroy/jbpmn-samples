@@ -41,7 +41,7 @@
 
 ## Problématiques de déploiement
 
-- Librairie jBPM et dépendances         _OK_
+- Librairie jBPM et dépendances _OK_
 - Fichiers de configurations (nœuds, actions, calendrier, variables, etc.)
 - Base de données jBPM et relation avec Hibernate, configuration du service de persistance _OK_
 - Déploiement pour un .war ou .ear _OK_
@@ -134,3 +134,9 @@
 ## Travaux Pratiques
 
 - Utilisation du serveur JBoss et de l'IDE Eclipse
+
+## Liens Utiles
+
+https://github.com/kiegroup/droolsjbpm-integration/blob/main/kie-server-parent/kie-server-maven-plugin/README.md
+https://docs.jboss.org/drools/release/6.2.0.CR3/drools-docs/html/KIEChapter.html#KIEModuleIntroductionBuildingIntroductionSection
+https://docs.redhat.com/en/documentation/red_hat_process_automation_manager/7.12/html/deploying_and_managing_red_hat_process_automation_manager_services/kie-server-java-api-con_kie-apis#kie-server-java-api-requests-proc_kie-apis

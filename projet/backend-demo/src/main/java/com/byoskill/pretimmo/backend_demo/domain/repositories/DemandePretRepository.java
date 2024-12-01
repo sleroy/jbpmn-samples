@@ -1,6 +1,6 @@
-package com.byoskill.pretimmo.backend_demo.repositories;
+package com.byoskill.pretimmo.backend_demo.domain.repositories;
 
-import com.byoskill.pretimmo.pret.entities.DemandePret;
+import com.byoskill.pretimmo.backend_demo.domain.entities.DemandePret;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
