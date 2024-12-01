@@ -41,14 +41,14 @@
 
 ## Problématiques de déploiement
 
-- Librairie jBPM et dépendances
+- Librairie jBPM et dépendances         _OK_
 - Fichiers de configurations (nœuds, actions, calendrier, variables, etc.)
 - Base de données jBPM et relation avec Hibernate, configuration du service de persistance _OK_
-- Déploiement pour un .war ou .ear
+- Déploiement pour un .war ou .ear _OK_
 
 ## Travaux Pratiques
 
-- Prise en main du designer, modélisation d'un processus de validation et exécution du processus dans une application web
+- Prise en main du designer, modélisation d'un processus de validation et exécution du processus dans une application web _OK_
 
 # Programmation client
 
