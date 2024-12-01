@@ -5,10 +5,7 @@ import org.kie.server.api.marshalling.MarshallingFormat;
 import org.kie.server.api.model.KieContainerResource;
 import org.kie.server.api.model.KieContainerResourceList;
 import org.kie.server.api.model.instance.ProcessInstance;
-import org.kie.server.client.KieServicesClient;
-import org.kie.server.client.KieServicesConfiguration;
-import org.kie.server.client.KieServicesFactory;
-import org.kie.server.client.ProcessServicesClient;
+import org.kie.server.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +76,11 @@ public class JBPMService {
         return kieServicesClient.getServicesClient(ProcessServicesClient.class);
     }
 
+    public UserTaskServicesClient getUserTaskServicesClient() {
+
+        return kieServicesClient.getServicesClient(UserTaskServicesClient.class);
+    }
+
     public Long launchProcessus(String containerId, String processId, Map<String, Object> parameters) {
 
         ProcessServicesClient processServiceClient = getProcessServiceClient();
@@ -93,6 +95,28 @@ public class JBPMService {
         if (processId == null) return "Inconnu";
         ProcessInstance processInstance = getProcessServiceClient().getProcessInstance(containerId, processId);
         if (processInstance == null) return "Completed";
+        String processusInstanceStatus = getProcessusInstanceStatus(processInstance);
+        getUserTaskServicesClient().act
+        return processusInstanceStatus;
+    }
+
+
+    /**
+     *   currentNode = appSess.getKsession().execute(new GenericCommand<Node>() {
+     *
+     *                 @Override
+     *                 public Node execute(Context context) {
+     *                     KieSession ksession = ((KnowledgeCommandContext) context).getKieSession();
+     *                     org.jbpm.workflow.instance.WorkflowProcessInstance pi = (org.jbpm.workflow.instance.WorkflowProcessInstance) (ProcessInstance) ksession.getProcessInstance(pid);
+     *                     Collection<NodeInstance> nodes = pi.getNodeInstances();
+     *                     NodeInstance nodeInstance = nodes.iterator().next();
+     *                     return nodeInstance.getNode();
+     *                 }
+     *             });
+     * @param processInstance
+     * @return
+     */
+    private static String getProcessusInstanceStatus(ProcessInstance processInstance) {
         Integer processInstanceState = processInstance.getState();
         switch (processInstanceState) {
             case STATE_COMPLETED:
