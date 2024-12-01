@@ -8,7 +8,7 @@ import com.byoskill.pretimmobilier.ValidationStatus;
 
 @org.kie.api.definition.type.Label("PretImmobilierDO")
 @org.kie.api.definition.type.Description("PretImmobilierDO")
-public class PretImmobilierDO implements java.io.Serializable {
+public class PretImmobilierDO extends ValidationStatus implements java.io.Serializable {
 
 	@org.kie.api.definition.type.Label("conditionsFinancieres")
 	private com.byoskill.pretimmobilier.ConditionsFinancieres conditionsFinancieres;
