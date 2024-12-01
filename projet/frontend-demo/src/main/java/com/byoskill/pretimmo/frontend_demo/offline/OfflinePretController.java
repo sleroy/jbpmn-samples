@@ -1,31 +1,28 @@
-package com.byoskill.pretimmo.frontend_demo.controllers;
+package com.byoskill.pretimmo.frontend_demo.offline;
 
-import com.byoskill.pretimmo.frontend_demo.model.ConditionsFinancieres;
 import com.byoskill.pretimmo.frontend_demo.model.DemandePret;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
-@Controller
-public class PretController {
+@Controller("offline")
+public class OfflinePretController {
 
     private List<DemandePret> prets = new ArrayList<>(); // Store submitted requests
-    private AtomicInteger nextPretId = new AtomicInteger(1); // Generate unique IDs
+    private AtomicLong nextPretId = new AtomicLong(1); // Generate unique IDs
 
-    @GetMapping("/")
+    @GetMapping("/offline")
     public String index(Model model) {
         model.addAttribute("demandePret", new DemandePret()); // Empty object for the form
         model.addAttribute("prets", prets); // Existing requests for the table
-        return "index";
+        return "connected";
     }
 
-    @PostMapping("/submitPret")
+    @PostMapping("/offline/submitPret")
     public String submitPret(@ModelAttribute DemandePret demandePret, Model model) {
         // Set a unique ID for the new request
         demandePret.setPretId(nextPretId.getAndIncrement());
@@ -40,6 +37,6 @@ public class PretController {
         model.addAttribute("demandePret", new DemandePret()); // Clear the form
         model.addAttribute("prets", prets);
 
-        return "index"; // Redirect back to the same page
+        return "connected"; // Redirect back to the same page
     }
 }

@@ -1,9 +1,9 @@
-package com.byoskill.pretimmo.frontend_demo.model;
+package com.byoskill.pretimmo.backend_demo.dto;
 
-public class DemandePret {
+public class DemandePretDTO {
 
     private Long pretId;
-    private ConditionsFinancieres conditionsFinancieres;
+    private ConditionsFinancieresDTO conditionsFinancieres;
     private String status;
 
     public String getStatus() {
@@ -15,11 +15,11 @@ public class DemandePret {
         this.status = status;
     }
 
-    public ConditionsFinancieres getConditionsFinancieres() {
+    public ConditionsFinancieresDTO getConditionsFinancieres() {
         return conditionsFinancieres;
     }
 
-    public void setConditionsFinancieres(ConditionsFinancieres conditionsFinancieres) {
+    public void setConditionsFinancieres(ConditionsFinancieresDTO conditionsFinancieres) {
         this.conditionsFinancieres = conditionsFinancieres;
     }
 
