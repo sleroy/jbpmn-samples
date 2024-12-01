@@ -1,6 +1,7 @@
 package com.byoskill.pretimmo.backend_demo.service;
 
 import jakarta.annotation.PostConstruct;
+
 import org.kie.server.api.marshalling.MarshallingFormat;
 import org.kie.server.api.model.KieContainerResource;
 import org.kie.server.api.model.KieContainerResourceList;
@@ -13,17 +14,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.kie.server.api.model.instance.NodeInstance;
 
 /**
- * This service is responsible for the interactions between the backend and the KIE Server from JBPM
+ * This service is responsible for the interactions between the backend and the
+ * KIE Server from JBPM
  * <p>
  * https://docs.redhat.com/en/documentation/red_hat_process_automation_manager/7.12/html/deploying_and_managing_red_hat_process_automation_manager_services/kie-server-java-api-con_kie-apis#kie-server-java-api-con_kie-apis
- **/
+ *
+ */
 @Service
 public class JBPMService {
-
 
     public static final int STATE_ABORTED = 3;
     public static final int STATE_ACTIVE = 1;
@@ -36,6 +42,24 @@ public class JBPMService {
     private final JBPMConfiguration configuration;
     private KieServicesConfiguration conf;
     private KieServicesClient kieServicesClient;
+
+    // Rules client
+    private RuleServicesClient ruleClient;
+
+    // Process automation clients
+    private CaseServicesClient caseClient;
+    private DocumentServicesClient documentClient;
+    private JobServicesClient jobClient;
+    private ProcessServicesClient processClient;
+    private QueryServicesClient queryClient;
+    private UIServicesClient uiClient;
+    private UserTaskServicesClient userTaskClient;
+
+    // DMN client
+    private DMNServicesClient dmnClient;
+
+    // Planning client
+    private  SolverServicesClient solverClient;
 
     @Autowired
     public JBPMService(JBPMConfiguration configuration) {
@@ -60,6 +84,10 @@ public class JBPMService {
 
         conf.setMarshallingFormat(FORMAT);
         kieServicesClient = KieServicesFactory.newKieServicesClient(conf);
+        initializeDroolsServiceClients();
+        initializeJbpmServiceClients();
+        initializeSolverServiceClients();
+
 
         LOGGER.info("Connection to JBPM server established {}", kieServicesClient.getServerInfo());
 
@@ -68,7 +96,25 @@ public class JBPMService {
             LOGGER.info("> Container id='{}', alias={}", container.getContainerId(), container.getContainerAlias(), container.getMessages());
         }
 
+    }
 
+    public void initializeDroolsServiceClients() {
+        ruleClient = kieServicesClient.getServicesClient(RuleServicesClient.class);
+        dmnClient = kieServicesClient.getServicesClient(DMNServicesClient.class);
+    }
+
+    public void initializeJbpmServiceClients() {
+        caseClient = kieServicesClient.getServicesClient(CaseServicesClient.class);
+        documentClient = kieServicesClient.getServicesClient(DocumentServicesClient.class);
+        jobClient = kieServicesClient.getServicesClient(JobServicesClient.class);
+        processClient = kieServicesClient.getServicesClient(ProcessServicesClient.class);
+        queryClient = kieServicesClient.getServicesClient(QueryServicesClient.class);
+        uiClient = kieServicesClient.getServicesClient(UIServicesClient.class);
+        userTaskClient = kieServicesClient.getServicesClient(UserTaskServicesClient.class);
+    }
+
+    public void initializeSolverServiceClients() {
+        solverClient = kieServicesClient.getServicesClient(SolverServicesClient.class);
     }
 
     public ProcessServicesClient getProcessServiceClient() {
@@ -86,51 +132,85 @@ public class JBPMService {
         ProcessServicesClient processServiceClient = getProcessServiceClient();
         Long processInstanceId = processServiceClient.startProcess(containerId, processId, parameters);
 
-
         LOGGER.info("Process instance started with ID: {}", processInstanceId);
         return processInstanceId;
     }
 
     public String getProcessInstanceStatus(String containerId, Long processId) {
-        if (processId == null) return "Inconnu";
+        if (processId == null) {
+            return "Inconnu";
+        }
         ProcessInstance processInstance = getProcessServiceClient().getProcessInstance(containerId, processId);
-        if (processInstance == null) return "Completed";
-        String processusInstanceStatus = getProcessusInstanceStatus(processInstance);
-        getUserTaskServicesClient().act
-        return processusInstanceStatus;
+        if (processInstance == null) {
+            return "Completed";
+        }
+        return getProcessusInstanceStatus(processInstance) + " - " + getActiveTaskName(containerId, processId);
     }
 
-
-    /**
-     *   currentNode = appSess.getKsession().execute(new GenericCommand<Node>() {
-     *
-     *                 @Override
-     *                 public Node execute(Context context) {
-     *                     KieSession ksession = ((KnowledgeCommandContext) context).getKieSession();
-     *                     org.jbpm.workflow.instance.WorkflowProcessInstance pi = (org.jbpm.workflow.instance.WorkflowProcessInstance) (ProcessInstance) ksession.getProcessInstance(pid);
-     *                     Collection<NodeInstance> nodes = pi.getNodeInstances();
-     *                     NodeInstance nodeInstance = nodes.iterator().next();
-     *                     return nodeInstance.getNode();
-     *                 }
-     *             });
-     * @param processInstance
-     * @return
-     */
     private static String getProcessusInstanceStatus(ProcessInstance processInstance) {
         Integer processInstanceState = processInstance.getState();
-        switch (processInstanceState) {
-            case STATE_COMPLETED:
-                return "Completed";
-            case STATE_ABORTED:
-                return "Aborted";
-            case STATE_SUSPENDED:
-                return "Suspended";
-            case STATE_PENDING:
-                return "Pending";
-            case STATE_ACTIVE:
-                return "Active";
-            default:
-                return "Unknown state " + processInstanceState;
+        return switch (processInstanceState) {
+            case STATE_COMPLETED ->
+                "Completed";
+            case STATE_ABORTED ->
+                "Aborted";
+            case STATE_SUSPENDED ->
+                "Suspended";
+            case STATE_PENDING ->
+                "Pending";
+            case STATE_ACTIVE ->
+                "Active";
+            default ->
+                "Unknown state " + processInstanceState;
+        };
+    }
+
+    public String getActiveTaskName(String containerId, Long processId) {
+        if (processId == null) {
+            return "Inconnu";
         }
+        List<NodeInstance> nodes = getProcessClient().findActiveNodeInstances(containerId, processId, 0, 2);
+        return nodes.stream().map(node -> node.getName()).collect(Collectors.joining(","));
+
+    }
+
+    public RuleServicesClient getRuleClient() {
+        return ruleClient;
+    }
+
+    public CaseServicesClient getCaseClient() {
+        return caseClient;
+    }
+
+    public DocumentServicesClient getDocumentClient() {
+        return documentClient;
+    }
+
+    public ProcessServicesClient getProcessClient() {
+        return processClient;
+    }
+
+    public QueryServicesClient getQueryClient() {
+        return queryClient;
+    }
+
+    public UIServicesClient getUiClient() {
+        return uiClient;
+    }
+
+    public UserTaskServicesClient getUserTaskClient() {
+        return userTaskClient;
+    }
+
+    public SolverServicesClient getSolverClient() {
+        return solverClient;
+    }
+
+    public DMNServicesClient getDmnClient() {
+        return dmnClient;
+    }
+
+    public JobServicesClient getJobClient() {
+        return jobClient;
     }
 }
