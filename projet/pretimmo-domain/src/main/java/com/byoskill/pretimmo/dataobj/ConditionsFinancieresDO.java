@@ -6,20 +6,17 @@ public class ConditionsFinancieresDO implements Serializable {
 
     private Long id; // Database ID
 
+    @org.kie.api.definition.type.Label(value = "Montant demandé")
     private Integer montantDemande;
+    @org.kie.api.definition.type.Label(value = "Nombre d'années")
     private Integer nombreAnnees;
+    
+    @org.kie.api.definition.type.Label(value = "Revenue Demandeur")
     private Integer revenuDemandeur;
+    @org.kie.api.definition.type.Label(value = "Mensualité")
     private Integer mensualite;
+    @org.kie.api.definition.type.Label(value = "Taux interet")
     private Float interest;
-    private DemandePretDO demandePretDO;
-
-    public DemandePretDO getDemandePret() {
-        return demandePretDO;
-    }
-
-    public void setDemandePret(DemandePretDO demandePretDO) {
-        this.demandePretDO = demandePretDO;
-    }
 
     public Long getId() {
         return id;

@@ -99,7 +99,7 @@
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
             <version>${version.org.jbpm}</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.kie</groupId>

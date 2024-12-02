@@ -2,79 +2,81 @@ package com.byoskill.pretimmo.dataobj;
 
 public class ValidationStatusDO implements java.io.Serializable {
 
-	private boolean notaireValidation = false;
-	private boolean conseillerValidation = false;
-	private boolean directeurValidation = false;
-	private boolean riskAssessmentValidation = false;
-	private boolean serviceFinancierValidation = false;
-	private Boolean reglesFinanciereValidation;
+	static final long serialVersionUID = 1L;
 
-	public boolean isNotaireValidation() {
-		return notaireValidation;
-	}
-
-	public void setNotaireValidation(boolean notaireValidation) {
-		this.notaireValidation = notaireValidation;
-	}
-
-	public boolean isConseillerValidation() {
-		return conseillerValidation;
-	}
-
-	public void setConseillerValidation(boolean conseillerValidation) {
-		this.conseillerValidation = conseillerValidation;
-	}
-
-	public boolean isDirecteurValidation() {
-		return directeurValidation;
-	}
-
-	public void setDirecteurValidation(boolean directeurValidation) {
-		this.directeurValidation = directeurValidation;
-	}
-
-	public boolean isRiskAssessmentValidation() {
-		return riskAssessmentValidation;
-	}
-
-	public void setRiskAssessmentValidation(boolean riskAssessmentValidation) {
-		this.riskAssessmentValidation = riskAssessmentValidation;
-	}
-
-	public boolean isServiceFinancierValidation() {
-		return serviceFinancierValidation;
-	}
-
-	public void setServiceFinancierValidation(boolean serviceFinancierValidation) {
-		this.serviceFinancierValidation = serviceFinancierValidation;
-	}
-
-	public boolean isValidationComplete() {
-		return notaireValidation && conseillerValidation && directeurValidation
-				&& riskAssessmentValidation && serviceFinancierValidation;
-	}
+	@org.kie.api.definition.type.Label(value = "notaireValidation")
+	private java.lang.Boolean notaireValidation;
+	@org.kie.api.definition.type.Label(value = "conseillerValidation")
+	private java.lang.Boolean conseillerValidation;
+	@org.kie.api.definition.type.Label(value = "directeurValidation")
+	private java.lang.Boolean directeurValidation;
+	@org.kie.api.definition.type.Label(value = "riskAssessmentValidation")
+	private java.lang.Boolean riskAssessmentValidation;
+	@org.kie.api.definition.type.Label(value = "serviceFinancierValidation")
+	private java.lang.Boolean serviceFinancierValidation;
+	@org.kie.api.definition.type.Label(value = "reglesFinanciereValidation")
+	private java.lang.Boolean reglesFinanciereValidation;
 
 	public ValidationStatusDO() {
 	}
 
-	public Boolean getReglesFinanciereValidation() {
-		return this.reglesFinanciereValidation;
+	public java.lang.Boolean getNotaireValidation() {
+		return this.notaireValidation;
 	}
 
-	public Boolean isReglesFinanciereValidation() {
+	public void setNotaireValidation(java.lang.Boolean notaireValidation) {
+		this.notaireValidation = notaireValidation;
+	}
+
+	public java.lang.Boolean getConseillerValidation() {
+		return this.conseillerValidation;
+	}
+
+	public void setConseillerValidation(java.lang.Boolean conseillerValidation) {
+		this.conseillerValidation = conseillerValidation;
+	}
+
+	public java.lang.Boolean getDirecteurValidation() {
+		return this.directeurValidation;
+	}
+
+	public void setDirecteurValidation(java.lang.Boolean directeurValidation) {
+		this.directeurValidation = directeurValidation;
+	}
+
+	public java.lang.Boolean getRiskAssessmentValidation() {
+		return this.riskAssessmentValidation;
+	}
+
+	public void setRiskAssessmentValidation(
+			java.lang.Boolean riskAssessmentValidation) {
+		this.riskAssessmentValidation = riskAssessmentValidation;
+	}
+
+	public java.lang.Boolean getServiceFinancierValidation() {
+		return this.serviceFinancierValidation;
+	}
+
+	public void setServiceFinancierValidation(
+			java.lang.Boolean serviceFinancierValidation) {
+		this.serviceFinancierValidation = serviceFinancierValidation;
+	}
+
+	public java.lang.Boolean getReglesFinanciereValidation() {
 		return this.reglesFinanciereValidation;
 	}
 
 	public void setReglesFinanciereValidation(
-			Boolean reglesFinanciereValidation) {
+			java.lang.Boolean reglesFinanciereValidation) {
 		this.reglesFinanciereValidation = reglesFinanciereValidation;
 	}
 
-	public ValidationStatusDO(boolean notaireValidation,
-			boolean conseillerValidation, boolean directeurValidation,
-			boolean riskAssessmentValidation,
-			boolean serviceFinancierValidation,
-			Boolean reglesFinanciereValidation) {
+	public ValidationStatusDO(java.lang.Boolean notaireValidation,
+			java.lang.Boolean conseillerValidation,
+			java.lang.Boolean directeurValidation,
+			java.lang.Boolean riskAssessmentValidation,
+			java.lang.Boolean serviceFinancierValidation,
+			java.lang.Boolean reglesFinanciereValidation) {
 		this.notaireValidation = notaireValidation;
 		this.conseillerValidation = conseillerValidation;
 		this.directeurValidation = directeurValidation;
@@ -82,4 +84,5 @@ public class ValidationStatusDO implements java.io.Serializable {
 		this.serviceFinancierValidation = serviceFinancierValidation;
 		this.reglesFinanciereValidation = reglesFinanciereValidation;
 	}
+
 }

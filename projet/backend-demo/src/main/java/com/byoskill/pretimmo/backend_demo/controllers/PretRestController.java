@@ -1,21 +1,27 @@
 package com.byoskill.pretimmo.backend_demo.controllers;
 
-import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.ConditionsFinancieresDTO;
-import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.DemandePretDTO;
-import com.byoskill.pretimmo.backend_demo.service.JBPMService;
-import com.byoskill.pretimmo.backend_demo.domain.entities.ConditionsFinancieres;
-import com.byoskill.pretimmo.backend_demo.domain.entities.DemandePret;
-import com.byoskill.pretimmo.backend_demo.domain.repositories.DemandePretRepository;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.ConditionsFinancieresDTO;
+import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.DemandePretDTO;
+import com.byoskill.pretimmo.backend_demo.domain.dataobj.ValidationStatusDO;
+import com.byoskill.pretimmo.backend_demo.domain.entities.ConditionsFinancieres;
+import com.byoskill.pretimmo.backend_demo.domain.entities.DemandePret;
+import com.byoskill.pretimmo.backend_demo.domain.repositories.DemandePretRepository;
+import com.byoskill.pretimmo.backend_demo.service.JBPMService;
 
 @RestController
 @RequestMapping("/api/pret")
@@ -69,6 +75,8 @@ public class PretRestController {
 
             LOGGER.info("Invoking JBPM to launch a new process instance");
             HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("pret", demandePret);
+            parameters.put("validation", new ValidationStatusDO());
             Long processInstanceId = jbpmService.launchProcessus(containerId, processId, parameters);
             demandePret.setProcessId(processInstanceId);
 

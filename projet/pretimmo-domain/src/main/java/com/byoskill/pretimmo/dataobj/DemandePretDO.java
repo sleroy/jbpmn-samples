@@ -6,8 +6,11 @@ import java.util.StringJoiner;
 public class DemandePretDO implements Serializable {
 
     private Long id; // Use Long for database IDs
+    @org.kie.api.definition.type.Label(value = "Conditions financières")
     private ConditionsFinancieresDO conditionsFinancieresDO;
+    @org.kie.api.definition.type.Label(value = "Status")
     private String status;
+    @org.kie.api.definition.type.Label(value = "Processus ID")
     private Long processId;
 
     public Long getProcessId() {
