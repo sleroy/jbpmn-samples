@@ -1,5 +1,8 @@
 package com.byoskill.pretimmo;
 
+import org.kie.api.remote.Remotable;
+
+@Remotable
 public class ValidationStatusDO implements java.io.Serializable {
 
 	static final long serialVersionUID = 1L;
