@@ -41,7 +41,6 @@ public class JBPMService {
     public static final int STATE_PENDING = 0;
     public static final int STATE_SUSPENDED = 4;
     //
-    private static final MarshallingFormat FORMAT = MarshallingFormat.JAXB;
     private static final Logger LOGGER = LoggerFactory.getLogger(JBPMService.class);
     private final JBPMConfiguration configuration;
     private KieServicesConfiguration conf;
@@ -87,7 +86,7 @@ public class JBPMService {
         extraClassList.add(ConditionsFinancieresDO.class);
         conf.addExtraClasses(extraClassList);
 
-        conf.setMarshallingFormat(FORMAT);
+        conf.setMarshallingFormat(MarshallingFormat.JSON);
         kieServicesClient = KieServicesFactory.newKieServicesClient(conf);
         initializeDroolsServiceClients();
         initializeJbpmServiceClients();

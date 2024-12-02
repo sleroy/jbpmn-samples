@@ -1,6 +1,7 @@
 package com.byoskill.pretimmo;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.kie.api.remote.Remotable;
 
 @org.kie.api.definition.type.Label("DemandePretDO")
 @javax.xml.bind.annotation.XmlRootElement
@@ -10,13 +11,10 @@ public class DemandePretDO implements java.io.Serializable {
 
 	@org.kie.api.definition.type.Label("conditionsFinancieresDO")
 	private com.byoskill.pretimmo.ConditionsFinancieresDO conditionsFinancieresDO;
-
 	@org.kie.api.definition.type.Label("status")
 	private java.lang.String status;
-
 	@org.kie.api.definition.type.Label("processId")
 	private java.lang.Long processId;
-
 	@org.kie.api.definition.type.Label("id")
 	private java.lang.Long id;
 
