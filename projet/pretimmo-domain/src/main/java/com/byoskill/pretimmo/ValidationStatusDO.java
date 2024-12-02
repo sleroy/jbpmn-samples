@@ -24,40 +24,11 @@ public class ValidationStatusDO implements java.io.Serializable {
 		return this.notaireValidation;
 	}
 
-	public boolean isRiskAssessmentValidation() {
-		return riskAssessmentValidation;
-	}
-
-	public boolean isServiceFinancierValidation() {
-		return serviceFinancierValidation;
-	}
-
-
-	public boolean isValidationComplete() {
-		return notaireValidation && conseillerValidation && directeurValidation
-				&& riskAssessmentValidation && serviceFinancierValidation;
-	}
-
-
-
-	public boolean isDirecteurValidation() {
-		return directeurValidation;
-	}
-
-	public boolean isNotaireValidation() {
-		return notaireValidation;
-	}
 
 	public void setNotaireValidation(boolean notaireValidation) {
 		this.notaireValidation = notaireValidation;
 	}
 
-	public boolean isConseillerValidation() {
-		return conseillerValidation;
-	}
-	public Boolean isReglesFinanciereValidation() {
-		return this.reglesFinanciereValidation;
-	}
 
 	public void setNotaireValidation(java.lang.Boolean notaireValidation) {
 		this.notaireValidation = notaireValidation;
