@@ -116,6 +116,7 @@
           <bpmn2:to xsi:type="bpmn2:tFormalExpression"><![CDATA[_B3635CC7-F46F-4C90-8B6E-BA32B3D54FEA_CommentInputX]]></bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
+      
       <bpmn2:dataInputAssociation>
         <bpmn2:targetRef>_B3635CC7-F46F-4C90-8B6E-BA32B3D54FEA_PriorityInputX</bpmn2:targetRef>
         <bpmn2:assignment>
