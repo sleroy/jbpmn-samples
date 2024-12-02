@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.byoskill.pretimmo.ConditionsFinancieresDO;
+import com.byoskill.pretimmo.DemandePretDO;
+import com.byoskill.pretimmo.ValidationStatusDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.ConditionsFinancieresDTO;
 import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.DemandePretDTO;
-import com.byoskill.pretimmo.backend_demo.domain.dataobj.ValidationStatusDO;
 import com.byoskill.pretimmo.backend_demo.domain.entities.ConditionsFinancieres;
 import com.byoskill.pretimmo.backend_demo.domain.entities.DemandePret;
 import com.byoskill.pretimmo.backend_demo.domain.repositories.DemandePretRepository;
@@ -75,7 +77,7 @@ public class PretRestController {
 
             LOGGER.info("Invoking JBPM to launch a new process instance");
             HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("pret", demandePret);
+            parameters.put("pret", mapToDO(demandePret));
             parameters.put("validation", new ValidationStatusDO());
             Long processInstanceId = jbpmService.launchProcessus(containerId, processId, parameters);
             demandePret.setProcessId(processInstanceId);
@@ -90,6 +92,27 @@ public class PretRestController {
             LOGGER.error("Error processing loan request: {}", e.getMessage(), e); // Log the error with stack trace
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private DemandePretDO mapToDO(DemandePret demandePret) {
+        DemandePretDO demandePretDO = new DemandePretDO();
+        demandePretDO.setStatus(demandePret.getStatus());
+
+        // Assuming ConditionsFinancieres and ConditionsFinancieresDO have the same fields.
+        ConditionsFinancieres conditions = demandePret.getConditionsFinancieres();
+        if (conditions != null) {
+
+            ConditionsFinancieresDO conditionsFinancieresDO = new ConditionsFinancieresDO();
+            conditionsFinancieresDO.setInterest(conditions.getInterest());
+            conditionsFinancieresDO.setMensualite(conditions.getMensualite());
+            conditionsFinancieresDO.setMontantDemande(conditions.getMontantDemande());
+            conditionsFinancieresDO.setNombreAnnees(conditions.getNombreAnnees());
+            conditionsFinancieresDO.setRevenuDemandeur(conditions.getRevenuDemandeur());
+
+            demandePretDO.setConditionsFinancieresDO(conditionsFinancieresDO);
+
+        }
+        return demandePretDO;
     }
 
     @GetMapping("/all")

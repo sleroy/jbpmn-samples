@@ -34,7 +34,11 @@
         <jbpm.version>7.74.1.Final</jbpm.version>
     </properties>
     <dependencies>
-
+        <dependency>
+            <groupId>com.byoskill.pretimmo</groupId>
+            <artifactId>pretimmo-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
