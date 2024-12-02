@@ -1,12 +1,15 @@
 package com.byoskill.pretimmo;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.kie.api.remote.Remotable;
 
+
+@XmlRootElement
 @Remotable
 public class ValidationStatusDO implements java.io.Serializable {
 
 	static final long serialVersionUID = 1L;
-
 	@org.kie.api.definition.type.Label(value = "notaireValidation")
 	private java.lang.Boolean notaireValidation;
 	@org.kie.api.definition.type.Label(value = "conseillerValidation")

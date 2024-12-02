@@ -14,4 +14,6 @@ public class AppConfig {
         loggingFilter.setMaxPayloadLength(64000);
         return loggingFilter;
     }
+
+   
 }

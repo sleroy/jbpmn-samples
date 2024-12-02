@@ -18,6 +18,7 @@ public class ConditionsFinancieresDO implements java.io.Serializable {
 	private java.lang.Integer revenuDemandeur;
 	@org.kie.api.definition.type.Label(value = "mensualite")
 	private java.lang.Integer mensualite;
+
 	@org.kie.api.definition.type.Label(value = "interest")
 	private java.lang.Float interest;
 

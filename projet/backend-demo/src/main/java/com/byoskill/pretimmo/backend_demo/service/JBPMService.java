@@ -21,6 +21,10 @@ import java.util.stream.Collectors;
 
 import org.kie.server.api.model.instance.NodeInstance;
 
+import com.byoskill.pretimmo.ConditionsFinancieresDO;
+import com.byoskill.pretimmo.DemandePretDO;
+import com.byoskill.pretimmo.ValidationStatusDO;
+
 /**
  * This service is responsible for the interactions between the backend and the
  * KIE Server from JBPM
@@ -37,7 +41,7 @@ public class JBPMService {
     public static final int STATE_PENDING = 0;
     public static final int STATE_SUSPENDED = 4;
     //
-    private static final MarshallingFormat FORMAT = MarshallingFormat.JSON;
+    private static final MarshallingFormat FORMAT = MarshallingFormat.JAXB;
     private static final Logger LOGGER = LoggerFactory.getLogger(JBPMService.class);
     private final JBPMConfiguration configuration;
     private KieServicesConfiguration conf;
@@ -78,8 +82,9 @@ public class JBPMService {
 
         //If you use custom classes, such as Obj.class, add them to the configuration.
         Set<Class<?>> extraClassList = new HashSet<Class<?>>();
-        //extraClassList.add(DemandePret.class);
-        //extraClassList.add(ConditionsFinancieres.class);
+        extraClassList.add(ValidationStatusDO.class);
+        extraClassList.add(DemandePretDO.class);
+        extraClassList.add(ConditionsFinancieresDO.class);
         conf.addExtraClasses(extraClassList);
 
         conf.setMarshallingFormat(FORMAT);
