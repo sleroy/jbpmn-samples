@@ -8,11 +8,15 @@ public class ConditionsFinancieresDO implements java.io.Serializable {
 
 	static final long serialVersionUID = 1L;
 
-	@org.kie.api.definition.type.Label(value = "Montant demandé")
+	@org.kie.api.definition.type.Label(value = "montantDemande")
 	private java.lang.Integer montantDemande;
+	@org.kie.api.definition.type.Label(value = "nombreAnnees")
 	private java.lang.Integer nombreAnnees;
+	@org.kie.api.definition.type.Label(value = "revenuDemandeur")
 	private java.lang.Integer revenuDemandeur;
+	@org.kie.api.definition.type.Label(value = "mensualite")
 	private java.lang.Integer mensualite;
+	@org.kie.api.definition.type.Label(value = "interest")
 	private java.lang.Float interest;
 
 	public ConditionsFinancieresDO() {
