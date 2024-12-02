@@ -7,9 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories("com.byoskill.pretimmo.*")
-@ComponentScan(basePackages = { "com.byoskill.pretimmo.*" })
-@EntityScan("com.byoskill.pretimmo.*")
 public class BackendDemoApplication {
 
 	public static void main(String[] args) {

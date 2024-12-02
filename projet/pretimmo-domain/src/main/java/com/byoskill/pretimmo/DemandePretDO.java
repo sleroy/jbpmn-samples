@@ -1,4 +1,4 @@
-package com.byoskill.pretimmo.dataobj;
+package com.byoskill.pretimmo;
 
 import java.io.Serializable;
 import java.util.StringJoiner;
