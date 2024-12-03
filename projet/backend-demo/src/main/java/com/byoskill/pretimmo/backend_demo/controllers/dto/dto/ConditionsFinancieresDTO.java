@@ -1,21 +1,23 @@
-package com.byoskill.pretimmo.frontend_demo.model;
+package com.byoskill.pretimmo.backend_demo.controllers.dto.dto;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
-public class ConditionsFinancieres implements Serializable {
+public class ConditionsFinancieresDTO implements Serializable {
 
-    private Integer montantDemande = 0;
-    private Integer nombreAnnees = 20;
-    private Integer revenuDemandeur = 2000;
-    private Integer mensualite = 700;
-    private Float interest = 0.2f;
+    private Integer montantDemande;
+    private Integer nombreAnnees;
+    private Integer revenuDemandeur;
+    private Integer mensualite;
+    private Float interest;
 
-    public ConditionsFinancieres() {
+
+    public ConditionsFinancieresDTO() {
     }
 
-    public ConditionsFinancieres(Integer montantDemande,
-                                 Integer nombreAnnees, Integer revenuDemandeur,
-                                 Integer mensualite, Float interest) {
+    public ConditionsFinancieresDTO(Integer montantDemande,
+                                    Integer nombreAnnees, Integer revenuDemandeur,
+                                    Integer mensualite, Float interest) {
         this.montantDemande = montantDemande;
         this.nombreAnnees = nombreAnnees;
         this.revenuDemandeur = revenuDemandeur;
@@ -73,5 +75,16 @@ public class ConditionsFinancieres implements Serializable {
         return (mensualite != null && revenuDemandeur != null)
                 ? (double) (mensualite * 12) / revenuDemandeur
                 : 0;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ConditionsFinancieresDTO.class.getSimpleName() + "[", "]")
+                .add("montantDemande=" + montantDemande)
+                .add("nombreAnnees=" + nombreAnnees)
+                .add("revenuDemandeur=" + revenuDemandeur)
+                .add("mensualite=" + mensualite)
+                .add("interest=" + interest)
+                .toString();
     }
 }

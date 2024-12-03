@@ -65,7 +65,7 @@
 
 <h1>Nouvelle Demande de Prêt</h1>
 
-<form action="#" th:action="@{/offline/submitPret}" th:object="${demandePret}" method="post">
+<form action="#" th:action="@{/connected/submitPret}" th:object="${demandePret}" method="post">
     <div>
     <label for="montantDemande">Montant demandé:</label>
     <input type="number" id="montantDemande" th:field="*{conditionsFinancieres.montantDemande}" required>
