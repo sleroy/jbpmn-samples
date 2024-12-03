@@ -1,29 +1,20 @@
 package com.byoskill.pretimmo.backend_demo.controllers;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.byoskill.pretimmo.ConditionsFinancieresDO;
-import com.byoskill.pretimmo.DemandePretDO;
-import com.byoskill.pretimmo.ValidationStatusDO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.ConditionsFinancieresDTO;
 import com.byoskill.pretimmo.backend_demo.controllers.dto.dto.DemandePretDTO;
 import com.byoskill.pretimmo.backend_demo.domain.entities.ConditionsFinancieres;
 import com.byoskill.pretimmo.backend_demo.domain.entities.DemandePret;
 import com.byoskill.pretimmo.backend_demo.domain.repositories.DemandePretRepository;
 import com.byoskill.pretimmo.backend_demo.service.JBPMService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/pret")
@@ -71,21 +62,7 @@ public class PretRestController {
     @PostMapping("/submit")
     public ResponseEntity<DemandePretDTO> submitPret(@RequestBody DemandePretDTO demandePretDTO) {
         try {
-            LOGGER.info("Received loan request: {}", demandePretDTO); // Log the incoming request
-
-            DemandePret demandePret = mapToEntity(demandePretDTO);
-
-            LOGGER.info("Invoking JBPM to launch a new process instance");
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("pret", mapToDO(demandePret));
-            parameters.put("validation", new ValidationStatusDO());
-            Long processInstanceId = jbpmService.launchProcessus(containerId, processId, parameters);
-            demandePret.setProcessId(processInstanceId);
-
-            demandePret = demandePretRepository.save(demandePret); // Save to database
-            LOGGER.info("Saved loan request with ID: {}", demandePret.getId()); // Log the saved entity
-
-            demandePretDTO.setPretId(demandePret.getId());
+            // Launch the process using JBPM
             return new ResponseEntity<>(demandePretDTO, HttpStatus.CREATED);
 
         } catch (Exception e) {
@@ -94,26 +71,6 @@ public class PretRestController {
         }
     }
 
-    private DemandePretDO mapToDO(DemandePret demandePret) {
-        DemandePretDO demandePretDO = new DemandePretDO();
-        demandePretDO.setStatus(demandePret.getStatus());
-
-        // Assuming ConditionsFinancieres and ConditionsFinancieresDO have the same fields.
-        ConditionsFinancieres conditions = demandePret.getConditionsFinancieres();
-        if (conditions != null) {
-
-            ConditionsFinancieresDO conditionsFinancieresDO = new ConditionsFinancieresDO();
-            conditionsFinancieresDO.setInterest(conditions.getInterest());
-            conditionsFinancieresDO.setMensualite(conditions.getMensualite());
-            conditionsFinancieresDO.setMontantDemande(conditions.getMontantDemande());
-            conditionsFinancieresDO.setNombreAnnees(conditions.getNombreAnnees());
-            conditionsFinancieresDO.setRevenuDemandeur(conditions.getRevenuDemandeur());
-
-            demandePretDO.setConditionsFinancieresDO(conditionsFinancieresDO);
-
-        }
-        return demandePretDO;
-    }
 
     @GetMapping("/all")
     public ResponseEntity<List<DemandePretDTO>> getAllPrets() {
@@ -156,19 +113,4 @@ public class PretRestController {
     }
 
 
-    private DemandePret mapToEntity(DemandePretDTO demandePretDTO) {
-        DemandePret demandePret = new DemandePret();
-        demandePret.setStatus(demandePretDTO.getStatus());
-        ConditionsFinancieres conditionsFinancieres = new ConditionsFinancieres();
-
-        conditionsFinancieres.setInterest(demandePretDTO.getConditionsFinancieres().getInterest());
-        conditionsFinancieres.setMensualite(demandePretDTO.getConditionsFinancieres().getMensualite());
-        conditionsFinancieres.setMontantDemande(demandePretDTO.getConditionsFinancieres().getMontantDemande());
-        conditionsFinancieres.setNombreAnnees(demandePretDTO.getConditionsFinancieres().getNombreAnnees());
-        conditionsFinancieres.setRevenuDemandeur(demandePretDTO.getConditionsFinancieres().getRevenuDemandeur());
-        demandePret.setConditionsFinancieres(conditionsFinancieres);
-
-
-        return demandePret;
-    }
 }
